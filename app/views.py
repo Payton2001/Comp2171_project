@@ -12,13 +12,20 @@ from app.forms import LoginForm, AddEmployeeForm, AddAppointmentForm, AddCustome
 ###########################################################################################################################
 ## Normal Routes ##
 ###########################################################################################################################
+
+
 @app.route('/')
+@login_required
 def home():
-    events = []
-    return render_template('home.html')
+    events = AppointmentProfile.query.all()
+    return_events = [];
+    for event in events:
+        return_events.append({'title': event.title, 'start':event.start_date.strftime("%Y-%m-%d"), 'status': event.status, 'customer': event.customer_id, 'employee': event.employee_id})
+    return render_template('schedule.html', ev=return_events)
 
 
 @app.route('/about/')
+@login_required
 def about():
     """Render the website's about page."""
     return render_template('about.html')
@@ -98,15 +105,16 @@ def add_appointment():
     form = AddAppointmentForm()
 
     if form.validate_on_submit and request.method == 'POST':
-        id = form.id.data
+        id = form.customer_id.data
         customer_id = form.customer_id.data
-        title = form.ttle.data
+        employee_id = form.employee_id.data
+        title = form.title.data
         status = form.status.data
         start_date = form.start_date.data
         start_time = form.start_time.data
         end_time = form.end_time.data
 
-        appointment = AppointmentProfile(request.form['customer_id'], request.form['title'], request.form['status'], request.form['start_date'],
+        appointment = AppointmentProfile(request.form['customer_id'], request.form['employee_id'], request.form['title'], request.form['status'], request.form['start_date'],
                                          request.form['start_time'], request.form['end_time'])
         db.session.add(appointment)
         db.session.commit()
@@ -129,15 +137,16 @@ def login():
         username = form.username.data
         password = form.password.data
 
-        user = db.session.execute(db.select(EmployeeProfile).filter_by(username=username)).scalar()
-        if user is not None and check_password_hash(user.password, password):
+        user = EmployeeProfile.query.filter_by(username=username).scalar()
 
+        # user = db.session.execute(db.select(EmployeeProfile).filter_by(username=username)).scalar()
+        if user and check_password_hash(user.password, password):
         # Gets user id, load into session
             login_user(user)
-            flash(f'User {username} has successfully logged in!!!')
+            flash(f'User {username} has been successfully logged in!')
             return redirect(url_for("all_customers"))
         else:
-            flash(f'User {username} was not logged in !!')
+            flash(f'Invalid credentials. User {username} was not logged in. {check_password_hash(user.password, password)}')
             return redirect(url_for('home'))
     return render_template("login.html", form=form)
 

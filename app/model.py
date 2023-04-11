@@ -2,6 +2,7 @@ from . import db
 from werkzeug.security import generate_password_hash
 from sqlalchemy.orm import backref
 #from sqlalchemy import ForeignKey
+from sqlalchemy import event
 
 
 class EmployeeProfile(db.Model):
@@ -39,8 +40,13 @@ class EmployeeProfile(db.Model):
       return str(self.id)
 
   def __repr__(self):
-    return '<User %r>' % (self.username)
-
+    return '<Employee %r>' % (self.id)
+  
+@event.listens_for(EmployeeProfile.__table__, 'after_create')
+def create_admin(*args, **kwargs):
+  employee = EmployeeProfile('Admin', 'User', 20, 'Female', 'adminuser', 'adminadmin')
+  db.session.add(employee)
+  db.session.commit()
 
 class CustomerProfile(db.Model):
 
@@ -77,26 +83,28 @@ class CustomerProfile(db.Model):
       return str(self.id)
 
   def __repr__(self):
-    return '<User %r>' % (self.username)
+    return '<Customer %r>' % (self.id)
 
 class AppointmentProfile(db.Model):
   __tablename__ = 'appointment_schedule'
   id = db.Column(db.Integer, primary_key=True)
   customer_id = db.Column(db.Integer, db.ForeignKey('customer_profiles.id'))
+  employee_id = db.Column(db.Integer, db.ForeignKey('employee_profiles.id'))
   customer_profiles = db.relationship("CustomerProfile", backref=backref('customer_profiles', uselist=False))
   title = db.Column(db.String(255))
   status = db.Column(db.String(80))
   start_date = db.Column(db.DateTime)
-  start_time = db.Column(db.DateTime)
-  end_time = db.Column(db.DateTime)
+  start_time = db.Column(db.String(80))
+  end_time = db.Column(db.String(80))
 
-  def __init__(self, customer_id, title, status, start_date, start_time, end_date, end_time):
+  def __init__(self, customer_id, employee_id, title, status, start_date, start_time, end_time):
     self.customer_id = customer_id
+    self.employee_id = employee_id
     self.title = title
     self.status = status
     self.start_date = start_date
     self.start_time = start_time
-    self.endt_time = end_time
+    self.end_time = end_time
 
   def is_authenticated(self):
     return True
@@ -114,4 +122,4 @@ class AppointmentProfile(db.Model):
       return str(self.id)
 
   def __repr__(self):
-    return '<User %r>' % (self.username)
+    return '<Appointment %r>' % (self.title)

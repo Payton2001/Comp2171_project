@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\niapa\Desktop\Object\venv"
+VIRTUAL_ENV="C:\Users\tiakr\Downloads\comp2171-hair\main\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

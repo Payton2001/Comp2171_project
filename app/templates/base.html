@@ -9,7 +9,9 @@
     <!-- Bootstrap -->
     <link href="{{ url_for('static', filename="css/bootstrap.min.css") }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename="css/app.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/schedule.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+
     {% block css %} {% endblock%}
   </head>
   <body>
@@ -29,6 +31,8 @@
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename="js/bootstrap.min.js") }}"></script>
+    <script src="{{url_for('static', filename="js/schedule.js")}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
     {% block js %} {% endblock%}
   </body>
 </html>

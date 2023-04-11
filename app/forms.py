@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired
 #from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms_alchemy import QuerySelectField
 
-from app.model import CustomerProfile
+from app.model import CustomerProfile, EmployeeProfile
 
 class LoginForm(FlaskForm):
   username = StringField('Username', validators=[InputRequired()])
@@ -13,6 +13,7 @@ class LoginForm(FlaskForm):
 
 class AddAppointmentForm(FlaskForm):
   customer_id = QuerySelectField(u'Customer ID', query_factory=lambda:CustomerProfile.query,get_label="id")
+  employee_id = QuerySelectField(u'Employee ID', query_factory=lambda:EmployeeProfile.query,get_label="id")
   title = StringField('Appointment Title', validators=[InputRequired()])
   status = SelectField('Appointment Status',
                        choices=[('Upcoming', 'Upcoming'),

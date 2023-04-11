@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="page-header">Schedule</h1>
+{% include 'flash_messages.html' %}
+
+<div id="calendar"></div>
+
+<div class="filter-btns">
+  <button id="filter-status">filter by status</button>
+  <button id="filter-employee">filter by employee</button>
+  <button id="filter-date">filter by date</button>
+</div>
+
+<script src="{{url_for('static', filename="js/schedule.js")}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
+
+<script type="text/javascript">
+  var calendarEl = document.getElementById('calendar');
+    var filterStatusBtn = document.querySelector('#filter-status');
+    var filterEmployeeBtn = document.querySelector('#filter-employee');
+    var filterDateBtn = document.querySelector('#filter-date');
+
+    var ev_json = {{ev|tojson}}
+    var final_ev = []
+    // console.log(ev_json)
+    for(e of ev_json){
+      final_ev.push({'title': e.title, 'start': e.start, 'status': e.status, 'employee': e.employee, 'customer': e.customer})
+    }
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      editable: true,
+      selectable: true,
+      height: 550,
+      select: function(selectionInfo){
+        console.log(selectionInfo);
+      },
+      events : final_ev,
+      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+        alert(
+          event.event.title + " was moved "
+        );
+
+        if (!confirm("Are you sure about this change?")) {
+            revertFunc();
+        }
+    },
+    eventClick: function(event, revertFunc){
+      event_title = event.event.title
+      new_title = prompt("Enter new title")
+      if(new_title){
+        event.event.setProp('title', new_title)     
+      }
+      if (!confirm("Are you sure you want to change the title?")) {
+        revertFunc();
+    }
+    }
+    });
+    calendar.render();
+
+    filterStatusBtn.addEventListener('click', () => {
+      status_filter = prompt("Which status do you want to filter by?")
+      all_events = calendar.getEvents()
+      events_lst = []   
+
+      for(ev of all_events){
+        if(ev.extendedProps.status == status_filter){
+          events_lst.push({title: ev.title, start:ev.start, status:ev.extendedProps.status, employee: ev.extendedProps.employee, customer: ev.extendedProps.customer})
+        }
+      }
+
+
+      var filtered_calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        editable: true,
+        selectable: true,
+        height: 550,
+        select: function(selectionInfo){
+          console.log(selectionInfo);
+        },
+        events : events_lst,
+        eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+          alert(
+            event.event.title + " was moved "
+          );
+  
+          if (!confirm("Are you sure about this change?")) {
+              revertFunc();
+          }
+      },
+      eventClick: function(event, revertFunc){
+        event_title = event.event.title
+        new_title = prompt("Enter new title")
+        if(new_title){
+          event.event.setProp('title', new_title)     
+        }
+        if (!confirm("Are you sure you want to change the title?")) {
+          revertFunc();
+      }
+      }
+      });
+      filtered_calendar.render();    
+    })
+    
+
+    filterEmployeeBtn.addEventListener('click', () => {
+      employee_filter = prompt("Enter the employee ID to filter by.")
+      all_events = calendar.getEvents()
+      events_lst = []   
+
+      for(ev of all_events){
+        if(ev.extendedProps.employee == employee_filter){
+          events_lst.push({title: ev.title, start:ev.start, status:ev.extendedProps.status, employee: ev.extendedProps.employee, customer: ev.extendedProps.customer})
+        }
+      }
+
+
+      var filtered_calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        editable: true,
+        selectable: true,
+        height: 550,
+        select: function(selectionInfo){
+          console.log(selectionInfo);
+        },
+        events : events_lst,
+        eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+          alert(
+            event.event.title + " was moved "
+          );
+  
+          if (!confirm("Are you sure about this change?")) {
+              revertFunc();
+          }
+      },
+      eventClick: function(event, revertFunc){
+        event_title = event.event.title
+        new_title = prompt("Enter new title")
+        if(new_title){
+          event.event.setProp('title', new_title)     
+        }
+        if (!confirm("Are you sure you want to change the title?")) {
+          revertFunc();
+      }
+      }
+      });
+      filtered_calendar.render();    
+    })
+    
+    filterDateBtn.addEventListener('click', () => {
+      date_filter = prompt("Which date do you want to filter by?")
+      all_events = calendar.getEvents()
+      events_lst = []   
+
+      for(ev of all_events){
+        if(ev.extendedProps.start == date_filter){
+          events_lst.push({title: ev.title, start:ev.start, status:ev.extendedProps.status, employee: ev.extendedProps.employee, customer: ev.extendedProps.customer})
+        }
+      }
+
+
+      var filtered_calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        editable: true,
+        selectable: true,
+        height: 550,
+        select: function(selectionInfo){
+          console.log(selectionInfo);
+        },
+        events : events_lst,
+        eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+          alert(
+            event.event.title + " was moved "
+          );
+  
+          if (!confirm("Are you sure about this change?")) {
+              revertFunc();
+          }
+      },
+      eventClick: function(event, revertFunc){
+        event_title = event.event.title
+        new_title = prompt("Enter new title")
+        if(new_title){
+          event.event.setProp('title', new_title)     
+        }
+        if (!confirm("Are you sure you want to change the title?")) {
+          revertFunc();
+      }
+      }
+      });
+      filtered_calendar.render();    
+    })
+</script>
+{% endblock %}
+
