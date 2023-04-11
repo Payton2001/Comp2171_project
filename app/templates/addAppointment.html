@@ -1,30 +1,24 @@
 {% extends 'base.html' %}
 {% block main%}
 <h1> Add New Appointment</h1>
-{% include 'flash_messstart_times.html' %}
+{% include 'flash_messages.html' %}
 <form action="{{ url_for('add_appointment')}}" method="post" enctype="multipart/form-data">
     {{ form.csrf_token}}
     <div class="form-group">
         {{ form.customer_id.label(class="form-label")}}
-        {{ form.customer_id.(class="form-control")}}
+        {{ form.customer_id(class="form-control")}}
     </div>
     <div class="form-group">
-        {{ form.title(class="form-label")}}
+        {{ form.title.label(class="form-label")}}
         {{ form.title(class="form-control")}}
     </div>
     <div class="form-group">
-        {{ form.status(class="form-label")}}
+        {{ form.status.label(class="form-label")}}
         {{ form.status(class="form-control")}}
     </div>
-    <div class="form-row">
-        <div class="col">
-            {{ form.start_date.label(class="form-label")}}
-            {{ form.start_date(class="form-control")}}
-        </div>
-        <div class="col">
-            {{ form.end_date.label(class="form-label")}}
-            {{ form.end_date(class="form-control")}}
-        </div>
+    <div class="col">
+        {{ form.start_date.label(class="form-label")}}
+        {{ form.start_date(class="form-control")}}
     </div>
     <div class="form-row">
         <div class="col">
@@ -32,7 +26,7 @@
             {{ form.start_time(class="form-control")}}
         </div>
         <div class="col">
-            {{ form.end_time(class="form-label")}}
+            {{ form.end_time.label(class="form-label")}}
             {{ form.end_time(class="form-control")}}
         </div>
     </div>

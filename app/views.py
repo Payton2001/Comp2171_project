@@ -97,7 +97,6 @@ def all_customers():
 def add_appointment():
     form = AddAppointmentForm()
 
-    form.customer_id.query = Cust
     if form.validate_on_submit and request.method == 'POST':
         id = form.id.data
         customer_id = form.customer_id.data
