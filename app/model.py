@@ -90,12 +90,12 @@ class AppointmentProfile(db.Model):
   start_time = db.Column(db.DateTime)
   end_time = db.Column(db.DateTime)
 
-  def __init__(self, title, status, start_date, start_time, end_date, end_time):
+  def __init__(self, customer_id, title, status, start_date, start_time, end_date, end_time):
+    self.customer_id = customer_id
     self.title = title
     self.status = status
     self.start_date = start_date
     self.start_time = start_time
-    self.end_date = end_date
     self.endt_time = end_time
 
   def is_authenticated(self):

@@ -1,12 +1,51 @@
 {% extends "base.html" %}
 
 {% block main %}
-<h1 class="page-header">INFO3180 Project 1</h1>
+<h1 class="page-header">Schedule</h1>
 {% include 'flash_messages.html' %}
 
-<p class="lead">
-    Welcome to Shadean's Rental!! Here you can find all types of property to rent.
-    Please to contact us for more information or login in if you are a landlord to
-    add a property.
-</p>
+<div id="calendar"></div>
+
 {% endblock %}
+
+{% block js%}
+<script>
+      document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                editable: true,
+                selectable: true,
+                select: function (selectionInfo) {
+                    console.log(selectionInfo);
+                },
+                events: [
+                    { title: 'Meeting', start: new Date() },
+                    { title: 'Meeting2', start: new Date(2023, 4, 5) }
+                ],
+                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+                    alert(
+                        event.event.title + " was moved "
+                    );
+
+                    if (!confirm("Are you sure about this change?")) {
+                        revertFunc();
+                    }
+                },
+                eventClick: function (event) {
+                    event_title = event.event.title
+                    new_title = prompt("Enter new title")
+                    event.event.setProp('title', new_title)
+                }
+            });
+            calendar.render();
+
+            calEvents = calendar.getEvents()
+            for (calEv of calEvents) {
+                console.log(calEv)
+            }
+        });
+    
+
+</script>
+{% endblock%}

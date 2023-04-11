@@ -4,7 +4,7 @@
 <h1> All Employees</h1>
 {% include 'flash_messages.html'%}
 
-<table class="table table-hover">
+<table class="table table-hover" id="emp">
     <thead class="thead-dark">
         <tr>
             <th scope="col">Employee ID</th>
@@ -29,3 +29,61 @@
     </tbody>
 </table>
 {% endblock%}
+
+{% block js %}
+<script>
+    let table = document.getElementById("emp")
+    let cells = table.getElementsByTagName("td")
+
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].onclick = function(){
+
+            if (this.hasAttribute('data_clicked')) {
+                return;
+            }
+            this.setAttribute('data_clicked', 'yes')
+            this.setAttribute('data_text', this.innerHTML)
+            let input = document.createElement('input')
+            input.setAttribute('type', 'text')
+            input.value = this.innerHTML
+            input.style.width = (this.clientLeft * 2) * 'px'
+            input.style.height = (this.clientTop * 2) * 'px'
+            input.style.border = '0px'
+            input.style.fontFamily = 'inherit'
+            input.style.fontSize = 'inherit'
+            input.style.textAlign = 'inherit'
+            input.style.backgroundColor = 'LightGoldenRodYellow'
+
+            input.onblur = function(){
+                let td = input.parentElement
+                let origin = input.parentElement.getAnimations('data-text')
+                let current_text = this.value
+
+                if (origin != current_text) {
+                    td.removeAttribute('data-clicked')
+                    td.removeAttribute('data-text')
+                    td.innerHTML = current_text
+                    console.log(origin + 'changed to' + current_text)
+                }
+                else{
+                    td.removeAttribute('data-clicked')
+                    td.removeAttribute('data-text')
+                    td.innerHTML = origin
+                    console.log('No change made')
+                }
+            }
+
+            input.onkeypress = function(){
+                if (event.keycode == 13) {
+                    this.blur()
+                }
+            }
+            this.innerHTML = ""
+            this.style.padding = "padding 0px 0px"
+            this.append(input)
+            this.firstElementChild.select()
+        }
+    }
+</script>
+
+{% endblock %}

@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 #from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
 from app.model import EmployeeProfile, CustomerProfile, AppointmentProfile
-from app.forms import LoginForm, AddEmployeeForm, AddAppointmentForm, AddCustomerForm
+from app.forms import LoginForm, AddEmployeeForm, AddAppointmentForm, AddCustomerForm, DeleteCustomerForm, DeleteEmployeeForm, EditEmployeeForm, EditCustomerForm
 
 
 ###########################################################################################################################
@@ -14,7 +14,7 @@ from app.forms import LoginForm, AddEmployeeForm, AddAppointmentForm, AddCustome
 ###########################################################################################################################
 @app.route('/')
 def home():
-    """Render website's home page."""
+    events = []
     return render_template('home.html')
 
 
@@ -59,6 +59,7 @@ def all_employees():
     flash('No Employee to display', 'error')
     return redirect(url_for('add_employee'))
 
+
 @app.route('/add_customer', methods=['POST', 'GET'])
 @login_required
 def add_customer():
@@ -91,7 +92,29 @@ def all_customers():
     flash('No Customer to display', 'error')
     return redirect(url_for('add_customer'))
 
+@app.route('/add_appointment', methods=['POST', 'GET'])
+@login_required
+def add_appointment():
+    form = AddAppointmentForm()
 
+    form.customer_id.query = Cust
+    if form.validate_on_submit and request.method == 'POST':
+        id = form.id.data
+        customer_id = form.customer_id.data
+        title = form.ttle.data
+        status = form.status.data
+        start_date = form.start_date.data
+        start_time = form.start_time.data
+        end_time = form.end_time.data
+
+        appointment = AppointmentProfile(request.form['customer_id'], request.form['title'], request.form['status'], request.form['start_date'],
+                                         request.form['start_time'], request.form['end_time'])
+        db.session.add(appointment)
+        db.session.commit()
+
+        flash('Appointment was successfully created', 'success')
+        return redirect(url_for('home'))
+    return render_template('addAppointment.html', form = form)
 
 ###########################################################################################################################
 ##Login and Logout User ##

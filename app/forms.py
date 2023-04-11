@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, DateField, DateTimeField
 from wtforms.validators import InputRequired
 #from flask_wtf.file import FileField, FileRequired, FileAllowed
-
+from wtforms_alchemy import QuerySelectField
 
 class LoginForm(FlaskForm):
   username = StringField('Username', validators=[InputRequired()])
@@ -10,6 +10,7 @@ class LoginForm(FlaskForm):
 
 
 class AddAppointmentForm(FlaskForm):
+  customer_id = QuerySelectField(u'Customer ID', validators=[InputRequired])
   title = StringField('Appointment Title', validators=[InputRequired()])
   status = SelectField('Appointment Status',
                        choices=[('Upcoming', 'Upcoming'),
@@ -18,7 +19,6 @@ class AddAppointmentForm(FlaskForm):
                        validators=[InputRequired()])
   start_date = DateField('Appointment Start Date')
   start_time = DateTimeField('Appointment Start Time')
-  end_date = DateField('Appointment End Date')
   end_time = DateTimeField('Appointment End Time')
 
 
@@ -42,3 +42,15 @@ class AddCustomerForm(FlaskForm):
                                    ('Jerry Curled', 'Jerry Curled'),
                                    ('Bald', 'Bald')],
                           validators=[InputRequired()])
+  
+class DeleteCustomerForm(FlaskForm):
+  id = StringField('Enter ID of Customer to Delete', validators=[InputRequired()])
+
+class DeleteEmployeeForm(FlaskForm):
+  id = StringField('Enter ID of Employee to Delete', validators=[InputRequired()])
+
+class EditEmployeeForm(FlaskForm):
+  id = StringField('Enter ID of Employee to Edit', validators=[InputRequired()])
+
+class EditCustomerForm(FlaskForm):
+  id = StringField('Enter ID of Customer to Edit', validators=[InputRequired()])
