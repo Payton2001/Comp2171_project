@@ -1,0 +1,5 @@
+Login
+Get ddirected to the home screen with the list of customers in a table
+The buttons should be at the top of the list
+Add Appointment is a pop up form and not a new page
+Each Customer is  a link that loads to all the appointments for that customer

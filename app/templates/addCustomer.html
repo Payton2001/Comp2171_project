@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block main%}
+<h1> Add New Customer</h1>
+{% include 'flash_messages.html' %}
+<form action="{{ url_for('add_customer')}}" method="post" enctype="multipart/form-data">
+    {{ form.csrf_token}}
+    <div class="form-row">
+        <div class="col">
+            {{ form.first_name.label(class="form-label")}}
+            {{ form.first_name(class="form-control")}}
+        </div>
+        <div class="col">
+            {{ form.last_name.label(class="form-label")}}
+            {{ form.last_name(class="form-control")}}       
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            {{ form.phone_number.label(class="form-label")}}
+            {{ form.phone_number(class="form-control")}}
+        </div>
+        <div class="col">
+            {{ form.email.label(class="form-label")}}
+            {{ form.email(class="form-control")}}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form.hair_type.label(class="form-label")}}
+        {{ form.hair_type(class="form-control")}}
+    </div>
+    <div class="form-group">
+        <button type="submit" name="submit" class="btn btn-primary">Add Customer</button>
+    </div>
+</form>
+
+{%endblock%}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block main%}
+
+<h1> All Customers</h1>
+{% include 'flash_messages.html'%}
+
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Customer ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
+            <th scope="col">Hair Type</th>
+            <th scope="col">Date Added</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in all_customer %}
+        <tr>
+            <th scope="row">{{ customer.id}}</th>
+            <td>{{ customer.first_name}}</td>
+            <td>{{ customer.last_name}}</td>
+            <td>{{ customer.phone_number}}</td>
+            <td>{{ customer.email}}</td>
+            <td>{{ customer.hair_type}}</td>
+            <td>{{ customer.date_added}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+{% endblock%}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block main%}
+
+<h1> All Employees</h1>
+{% include 'flash_messages.html'%}
+
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Employee ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Username</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in all_employee %}
+            <tr>
+                <th scope="row">{{ employee.id}}</th>
+                <td>{{ employee.first_name}}</td>
+                <td>{{ employee.last_name}}</td>
+                <td>{{ employee.age}}</td>
+                <td>{{ employee.gender}}</td>
+                <td>{{ employee.username}}</td>
+            </tr>
+        {%endfor%}
+    </tbody>
+</table>
+{% endblock%}
